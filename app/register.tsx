@@ -32,28 +32,37 @@ const Register = () => {
   };
 
   if (auth) {
-    return <Redirect href={"/(auth)"} />;
+    return <Redirect href={"/(auth)/(tabs)"} />;
   }
 
   const registerUser = async () => {
     try {
-      setLoading(true);
-      const res = await axios.post(API_URL + "/auth/register", registerData);
-      console.log(res);
-      showSnackBar("Registered successfully")
-      setLoading(false);
-      // Optionally navigate to sign-in after successful registration
-      router.push("/sign-in"); 
+      if (
+        registerData.email != "" &&
+        registerData.name != "" &&
+        registerData.password != ""
+      ) {
+        setLoading(true);
+        const res = await axios.post(API_URL + "/auth/register", registerData);
+        showSnackBar("Registered successfully");
+        setLoading(false);
+        router.push("/sign-in");
+      } else {
+        showSnackBar("Enter all details", 1000);
+      }
     } catch (error: any) {
       setLoading(false);
-      showSnackBar(error?.response?.data?.message || "Registration failed", 2000);
+      showSnackBar(
+        error?.response?.data?.message || "Registration failed",
+        2000
+      );
     }
   };
   return (
     <ThemedBackground
       style={{ padding: 20, gap: 20, justifyContent: "center" }}
     >
-       <TextInput
+      <TextInput
         placeholder="e.g. Ratan"
         label={"Name"}
         value={registerData.name}
@@ -71,8 +80,12 @@ const Register = () => {
         label={"Password"}
         value={registerData.password}
         onChangeText={(val) => handleChange(val, "password")}
-        right={<TextInput.Icon icon={showPassword ? "eye-off" : "eye"} onPress={togglePassword} />}
-
+        right={
+          <TextInput.Icon
+            icon={showPassword ? "eye-off" : "eye"}
+            onPress={togglePassword}
+          />
+        }
       />
       <Button
         mode="contained-tonal"
@@ -86,8 +99,7 @@ const Register = () => {
         Already have an account?{" "}
         <Link
           style={{ fontWeight: "bold", color: theme.colors.primary }}
-          href={"/sign-in"}
-          replace
+          href={"../"}
         >
           Sign In
         </Link>

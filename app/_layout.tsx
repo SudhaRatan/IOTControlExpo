@@ -1,21 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-import {
-  MD3DarkTheme,
-  PaperProvider,
-  Snackbar,
-  useTheme,
-} from "react-native-paper";
+import { PaperProvider, useTheme } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { StatusBar as SB, View, useColorScheme } from "react-native";
 import ThemedBackground from "@/src/components/ThemedBackground";
@@ -60,14 +50,22 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const theme = useTheme()
+  const theme = useTheme();
   const colorScheme = useColorScheme();
   return (
     <JotaiProvider store={snackBarStore}>
       <PaperProvider>
-        <ThemedBackground style={{ paddingTop: SB.currentHeight }}>
-          <StatusBar style={colorScheme == "dark" ? "light" : "light"} />
-          <Stack screenOptions={{ headerShown: false, navigationBarColor:theme.colors.onBackground}}>
+        <ThemedBackground>
+          <StatusBar style={colorScheme == "dark" ? "light" : "dark"} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              navigationBarColor:
+                colorScheme == "light"
+                  ? theme.colors.background
+                  : theme.colors.onBackground,
+            }}
+          >
             <Stack.Screen
               name="sign-in"
               options={{

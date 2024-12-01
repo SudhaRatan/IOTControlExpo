@@ -30,16 +30,19 @@ const SignIn = () => {
   };
 
   if (auth) {
-    console.log(auth)
-    return <Redirect href={"/(auth)"} />;
+    return <Redirect href={"/(auth)/(tabs)"} />;
   }
 
   const signIn = async () => {
     try {
-      setLoading(true);
-      const res = await axios.post(API_URL + "/auth", login);
-      setAuth(res.data);
-      setLoading(false);
+      if (login.email != "" && login.password != "") {
+        setLoading(true);
+        const res = await axios.post(API_URL + "/auth", login);
+        setAuth(res.data);
+        setLoading(false);
+      }else{
+        showSnackBar("Enter all details", 1000);
+      }
     } catch (error: any) {
       setLoading(false);
       showSnackBar(error.response.data.message, 2000);
@@ -62,7 +65,12 @@ const SignIn = () => {
         label={"Password"}
         value={login.password}
         onChangeText={(val) => handleChange(val, "password")}
-        right={<TextInput.Icon icon={showPassword ? "eye-off" : "eye"} onPress={togglePassword} />}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? "eye-off" : "eye"}
+            onPress={togglePassword}
+          />
+        }
       />
       <Button
         mode="contained-tonal"
