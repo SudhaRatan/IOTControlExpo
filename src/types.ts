@@ -6,3 +6,7 @@ export interface login {
 export interface register extends login{
   name: string
 }
+
+export interface logo{
+  name: string;
+}

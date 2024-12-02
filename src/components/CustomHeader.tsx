@@ -1,27 +1,37 @@
 import { router } from "expo-router";
-import {
-  GestureResponderEvent,
-} from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Appbar } from "react-native-paper";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack/src/types";
+import { FC } from "react";
 
 interface CustomStackHeaderProps extends NativeStackHeaderProps {
   title?: string;
-  right?: string;
-  rightOnPress?: (event?: GestureResponderEvent) => void;
+  Right?: FC;
+  headerCenter?: boolean;
+  Back?: FC;
 }
 
 const CustomHeader = ({
   title,
   back,
-  right,
-  rightOnPress,
+  Right,
+  headerCenter,
+  Back,
 }: CustomStackHeaderProps) => {
   return (
-    <Appbar.Header>
-      {back && <Appbar.BackAction onPress={() => router.back()} />}
+    <Appbar.Header
+      mode={headerCenter ? "center-aligned" : "small"}
+      style={{ paddingHorizontal: 10 }}
+    >
+      {back && !Back ? (
+        <Appbar.BackAction onPress={router.back} />
+      ) : (
+        <TouchableOpacity onPress={router.back}>
+          {Back && <Back />}
+        </TouchableOpacity>
+      )}
       <Appbar.Content title={title} />
-      {right && <Appbar.Action icon={right} onPress={rightOnPress} />}
+      {Right && <Right />}
     </Appbar.Header>
   );
 };

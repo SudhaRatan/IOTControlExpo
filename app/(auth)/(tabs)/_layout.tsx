@@ -1,10 +1,11 @@
 import { authAtom } from "@/src/atoms/initAtoms";
 import { Redirect, Tabs, router } from "expo-router";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import axios from "../../../src/utils/axios";
 import { Icon, IconButton, Text, useTheme } from "react-native-paper";
 import { Pressable } from "react-native";
+import { device } from "@/src/atoms/devicesAtoms";
 
 export default function Layout() {
   const auth = useAtomValue(authAtom);
@@ -14,6 +15,8 @@ export default function Layout() {
     if (auth) axios.defaults.headers.common["x-access-token"] = auth.token;
   }, [auth]);
 
+  const setDevice = useSetAtom(device);
+
   if (!auth) {
     return <Redirect href={"/sign-in"} />;
   }
@@ -22,7 +25,7 @@ export default function Layout() {
     <Tabs
       screenOptions={{
         tabBarStyle: { backgroundColor: theme.colors.background },
-        headerStyle: { backgroundColor: theme.colors.background, elevation:0 },
+        headerStyle: { backgroundColor: theme.colors.background, elevation: 0 },
       }}
     >
       <Tabs.Screen
@@ -32,7 +35,15 @@ export default function Layout() {
             return <Text variant="titleLarge">Home</Text>;
           },
           tabBarShowLabel: false,
-          headerRight:() => <IconButton icon={"plus"} onPress={() => router.navigate("/add")} />,
+          headerRight: () => (
+            <IconButton
+              icon={"plus"}
+              onPress={() => {
+                setDevice({ icon: "home", name: "" });
+                router.navigate("/addDevice");
+              }}
+            />
+          ),
           tabBarIcon: (props) => {
             return (
               <Icon

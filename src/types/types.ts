@@ -5,13 +5,14 @@ export interface User {
 }
 
 export interface Thing {
-  _id: string;
+  _id?: string;
   name: string;
-  switches: Switch[];
+  icon: string;
+  switches?: Switch[];
 }
 
 export interface Switch {
-  _id: string;
+  _id?: string;
   name: string;
   icon: string;
   thingId: string;
