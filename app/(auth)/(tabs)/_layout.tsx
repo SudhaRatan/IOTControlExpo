@@ -4,15 +4,22 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import axios from "../../../src/utils/axios";
 import { Icon, IconButton, Text, useTheme } from "react-native-paper";
-import { Pressable } from "react-native";
-import { device } from "@/src/atoms/devicesAtoms";
+import { device, devices, loadingDevices } from "@/src/atoms/devicesAtoms";
+import { getDevices } from "@/src/utils/rest/devices";
 
 export default function Layout() {
   const auth = useAtomValue(authAtom);
   const theme = useTheme();
+  const setDevices = useSetAtom(devices)
+  const setLoadingDevices = useSetAtom(loadingDevices)
 
   useEffect(() => {
-    if (auth) axios.defaults.headers.common["x-access-token"] = auth.token;
+    (async() => {
+      if (auth) {
+        axios.defaults.headers.common["x-access-token"] = auth.token;
+        await getDevices(setDevices, setLoadingDevices);
+      }
+    })();
   }, [auth]);
 
   const setDevice = useSetAtom(device);

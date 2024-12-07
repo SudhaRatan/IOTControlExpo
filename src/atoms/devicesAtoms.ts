@@ -12,3 +12,5 @@ export const devices = atomWithStorage<Thing[] | null>(
 );
 
 export const device = atom<Thing>({ icon: "home", name: "" } as Thing);
+
+export const loadingDevices = atom(false)

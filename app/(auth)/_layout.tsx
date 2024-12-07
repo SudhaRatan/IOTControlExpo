@@ -1,8 +1,7 @@
 import CustomHeader from "@/src/components/CustomHeader";
 import SaveDevice from "@/src/components/SaveDevice";
 import { Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
 export default function Layout() {
   const theme = useTheme();
@@ -16,19 +15,19 @@ export default function Layout() {
       <Stack.Screen
         name="addDevice"
         options={{
-          headerShown: true,
-          header: (props) => (
-            <CustomHeader
-              headerCenter
-              {...props}
-              title={"Add a device"}
-              back={props.back}
-              Right={() => <SaveDevice />}
-              Back={() => (
-                <Text style={{ color: theme.colors.tertiary }}>CANCEL</Text>
-              )}
-            />
-          ),
+          // headerShown: false,
+          // header: (props) => (
+          //   <CustomHeader
+          //     headerCenter
+          //     {...props}
+          //     title={"Add a device"}
+          //     back={props.back}
+          //     Right={() => <SaveDevice />}
+          //     Back={() => (
+          //       <Text style={{ color: theme.colors.tertiary }}>CANCEL</Text>
+          //     )}
+          //   />
+          // ),
           presentation: "containedTransparentModal",
           animation: "simple_push",
         }}

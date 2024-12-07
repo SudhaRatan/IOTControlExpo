@@ -4,33 +4,54 @@ import { ActivityIndicator, Text, useTheme } from "react-native-paper";
 import axios from "../utils/axios";
 import { API_URL } from "../constants/Consts";
 import { useAtom } from "jotai";
-import { device } from "../atoms/devicesAtoms";
-import { useState } from "react";
-import { router } from "expo-router";
+import { device, devices } from "../atoms/devicesAtoms";
+import { useEffect, useState } from "react";
+import { router, useRootNavigationState } from "expo-router";
 import { showSnackBar } from "./SnackBar";
+import { Thing } from "../types/types";
 
-const SaveDevice = () => {
+interface SaveDeviceType {
+  deviceId: string | null;
+}
+
+const SaveDevice = ({ deviceId }: SaveDeviceType) => {
   const theme = useTheme();
   const [dev, setDev] = useAtom(device);
   const [loading, setLoading] = useState(false);
+  const [devs, setDevices] = useAtom(devices);
 
   const addDevice = async () => {
     if (dev.name != "" && dev.icon != "") {
-      console.log(dev, "==>>");
       try {
         setLoading(true);
-        const res = await axios.post(API_URL + "/things", {
-          name: dev.name,
-          icon: dev.icon,
-        });
-        console.log(res.data);
+        if (deviceId) {
+          const res = await axios.put(API_URL + `/things/${deviceId}`, {
+            name: dev.name,
+            icon: dev.icon,
+          });
+          setDevices((prevDevs) => {
+            const updatedDevs = [...(prevDevs as Thing[])];
+            const ind = updatedDevs.findIndex((i) => i._id === deviceId);
+            if (ind !== -1) updatedDevs[ind] = res.data;
+            return updatedDevs;
+          });
+        } else {
+          const res = await axios.post(API_URL + "/things", {
+            name: dev.name,
+            icon: dev.icon,
+          });
+          setDevices((prev) => [...(prev as Thing[]), res.data]);
+        }
         setLoading(false);
         setDev({ icon: "home", name: "" });
-        showSnackBar("Added successfully!", 2000)
-        router.back()
-      } catch (error) {
+        showSnackBar(
+          deviceId ? "Updated successfully!" : "Added successfully!",
+          2000
+        );
+        router.back();
+      } catch (error: any) {
         setLoading(false);
-        console.log(error);
+        console.log(error?.reponse);
       }
     }
   };
@@ -47,9 +68,14 @@ const SaveDevice = () => {
       disabled={loading}
     >
       {!loading ? (
-        <Text style={{ color: theme.colors.primaryContainer }}>SAVE</Text>
+        <Text style={{ color: theme.colors.primaryContainer }}>
+          {deviceId ? "UPDATE" : "SAVE"}
+        </Text>
       ) : (
-        <ActivityIndicator size={"small"} />
+        <ActivityIndicator
+          color={theme.colors.primaryContainer}
+          size={"small"}
+        />
       )}
     </TouchableOpacity>
   );

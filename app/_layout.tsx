@@ -11,6 +11,7 @@ import { StatusBar as SB, View, useColorScheme } from "react-native";
 import ThemedBackground from "@/src/components/ThemedBackground";
 import { Provider as JotaiProvider } from "jotai";
 import SnackBar, { snackBarStore } from "@/src/components/SnackBar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,35 +54,37 @@ function RootLayoutNav() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
   return (
-    <JotaiProvider store={snackBarStore}>
-      <PaperProvider>
-        <ThemedBackground>
-          <StatusBar style={colorScheme == "dark" ? "light" : "dark"} />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              navigationBarColor:
-                colorScheme == "light"
-                  ? theme.colors.background
-                  : theme.colors.onBackground,
-            }}
-          >
-            <Stack.Screen
-              name="sign-in"
-              options={{
-                animationMatchesGesture: true,
-                animationTypeForReplace: "push",
+    <GestureHandlerRootView>
+      <JotaiProvider store={snackBarStore}>
+        <PaperProvider>
+          <ThemedBackground>
+            <StatusBar style={colorScheme == "dark" ? "light" : "dark"} />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                navigationBarColor:
+                  colorScheme == "light"
+                    ? theme.colors.background
+                    : theme.colors.onBackground,
               }}
-            />
-            <Stack.Screen name="(auth)" />
-            <Stack.Screen
-              name="register"
-              options={{ animation: "fade_from_bottom" }}
-            />
-          </Stack>
-        </ThemedBackground>
-        <SnackBar />
-      </PaperProvider>
-    </JotaiProvider>
+            >
+              <Stack.Screen
+                name="sign-in"
+                options={{
+                  animationMatchesGesture: true,
+                  animationTypeForReplace: "push",
+                }}
+              />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen
+                name="register"
+                options={{ animation: "fade_from_bottom" }}
+              />
+            </Stack>
+          </ThemedBackground>
+          <SnackBar />
+        </PaperProvider>
+      </JotaiProvider>
+    </GestureHandlerRootView>
   );
 }
