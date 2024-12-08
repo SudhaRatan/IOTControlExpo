@@ -13,10 +13,10 @@ interface CustomStackHeaderProps extends NativeStackHeaderProps {
 
 const CustomHeader = ({
   title,
-  back,
   Right,
   headerCenter,
   Back,
+  back
 }: CustomStackHeaderProps) => {
   return (
     <Appbar.Header

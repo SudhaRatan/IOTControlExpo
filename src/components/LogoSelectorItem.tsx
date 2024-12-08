@@ -26,7 +26,7 @@ const LogoSelectorItem = ({ logo, setSelector }: LSInt) => {
         backgroundColor:
           dev.icon == logo.name
             ? theme.colors.primaryContainer
-            : theme.colors.background,
+            : theme.colors.surfaceDisabled,
         borderRadius: 5,
         justifyContent: "center",
         alignItems: "center",

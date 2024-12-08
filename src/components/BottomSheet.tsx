@@ -28,13 +28,9 @@ import { useTheme } from "react-native-paper";
 
 const BottomSheet = forwardRef(
   ({ children, style, onClose, hidePill }: any, ref) => {
+    var bh: any;
     useEffect(() => {
-      const bh = BackHandler.addEventListener("hardwareBackPress", () => {
-        close();
-        return true;
-      });
-
-      return () => bh.remove();
+      return () => bh?.remove();
     });
     const insets = useSafeAreaInsets();
 
@@ -73,6 +69,11 @@ const BottomSheet = forwardRef(
       });
 
     const open = useCallback(() => {
+      bh = BackHandler.addEventListener("hardwareBackPress", () => {
+        close();
+        bh?.remove();
+        return true;
+      });
       translate.value = withSpring(0, {
         damping: 100,
         stiffness: 400,
@@ -80,6 +81,7 @@ const BottomSheet = forwardRef(
     }, [translate]);
 
     const close = useCallback(() => {
+      bh?.remove()
       translate.value = withTiming(bottomBarHeight + insets.bottom + 50);
       if (onClose) onClose();
       Keyboard.dismiss();

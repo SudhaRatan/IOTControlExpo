@@ -1,6 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import { Icon, Text, useTheme } from "react-native-paper";
 import { Thing } from "../types/types";
+import { router } from "expo-router";
 
 interface DeviceItemType {
   device: Thing;
@@ -10,7 +11,7 @@ interface DeviceItemType {
 const DeviceItem = ({ device, openMenu }: DeviceItemType) => {
   const theme = useTheme();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => router.push(`/(auth)/switches/${device._id}`)}>
       <View
         style={{
           flexDirection: "row",

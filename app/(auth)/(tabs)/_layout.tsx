@@ -47,7 +47,7 @@ export default function Layout() {
               icon={"plus"}
               onPress={() => {
                 setDevice({ icon: "home", name: "" });
-                router.navigate("/addDevice");
+                router.push("/addDevice");
               }}
             />
           ),

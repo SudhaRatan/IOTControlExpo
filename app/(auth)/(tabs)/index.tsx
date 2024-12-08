@@ -58,7 +58,12 @@ const Index = () => {
   return (
     <ThemedBackground>
       <FlatList
-        contentContainerStyle={{ padding: 20 }}
+        contentContainerStyle={{ padding: 20, paddingTop: 0 }}
+        ListEmptyComponent={() => (
+          <Text style={{ textAlign: "center", fontWeight: 700, fontSize: 16 }}>
+            Add devices to display here
+          </Text>
+        )}
         ItemSeparatorComponent={() => (
           <View
             style={{
@@ -111,7 +116,7 @@ const Index = () => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Cancel</Button>
-            <Button onPress={removeDevice}>Ok</Button>
+            <Button onPress={removeDevice}>Yes</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
