@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Pressable,
   StatusBar,
   TouchableOpacity,
   View,
   useWindowDimensions,
-  TextInput as NativeTextInput,
 } from "react-native";
 import {
-  ActivityIndicator,
   Button,
   Icon,
   IconButton,
@@ -24,6 +22,7 @@ import axios from "../utils/axios";
 import { API_URL, switchIds } from "../constants/Consts";
 import { useAtom } from "jotai";
 import { devices } from "../atoms/devicesAtoms";
+import { TextInputInAPortal } from "./TextInputInPortal";
 
 interface AddSwitchProps {
   close: () => void;
@@ -49,7 +48,6 @@ const AddSwitch = ({
   const [showMenu, setShowMenu] = useState(false);
   const width = useWindowDimensions().width - 40;
   const theme = useTheme();
-  const NameRef = useRef<NativeTextInput>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +67,6 @@ const AddSwitch = ({
   };
 
   const resetForm = () => {
-    NameRef.current?.setNativeProps({ text: "" });
     setSwitch(initialFormData);
   };
 
@@ -77,7 +74,6 @@ const AddSwitch = ({
     if (selectedSwitch) setSwitch(selectedSwitch);
     else {
       setSwitch(initialFormData);
-      NameRef.current?.setNativeProps({ text: "" });
     }
   }, [selectedSwitch]);
 
@@ -124,10 +120,6 @@ const AddSwitch = ({
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (sw) NameRef.current?.setNativeProps({ text: sw.name });
-  }, [sw]);
 
   return (
     <View style={{ gap: 20 }}>
@@ -200,13 +192,12 @@ const AddSwitch = ({
             );
           })}
       </Menu>
-      <TextInput
+      <TextInputInAPortal
+      value={sw.name}
         mode="outlined"
         placeholder="e.g. light"
-        // label="Name"
+        label="Name"
         onChangeText={handleTextInput}
-        defaultValue={sw.name}
-        ref={NameRef}
         left={
           <TextInput.Icon
             icon={sw?.icon as string}
