@@ -11,6 +11,7 @@ import {
   Icon,
   IconButton,
   Menu,
+  Provider,
   Text,
   TextInput,
   useTheme,
@@ -143,7 +144,7 @@ const AddSwitch = ({
         )}
       </View>
       <Menu
-        style={{ width: width }}
+        style={{ width: width, zIndex: 1000 }}
         visible={showMenu}
         onDismiss={() => setShowMenu(false)}
         statusBarHeight={StatusBar.currentHeight}
@@ -193,7 +194,7 @@ const AddSwitch = ({
           })}
       </Menu>
       <TextInputInAPortal
-      value={sw.name}
+        value={sw.name}
         mode="outlined"
         placeholder="e.g. light"
         label="Name"

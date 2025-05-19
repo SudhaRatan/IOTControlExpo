@@ -8,7 +8,7 @@ import { useNavigationState } from "@react-navigation/native";
 import { router, useRootNavigationState } from "expo-router";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { BackHandler, FlatList, StatusBar, View } from "react-native";
+import { BackHandler, FlatList, Platform, StatusBar, View } from "react-native";
 import { Button, Icon, Text, TextInput, useTheme } from "react-native-paper";
 
 const add = () => {
@@ -47,7 +47,7 @@ const add = () => {
     <ThemedBackground style={{ padding: 20, gap: 20, paddingTop: 0 }}>
       <View
         style={{
-          paddingTop: StatusBar.currentHeight,
+          paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 10,
           flexDirection: "row",
           alignItems: "center",
         }}

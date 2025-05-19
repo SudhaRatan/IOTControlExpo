@@ -1,7 +1,8 @@
 import { router } from "expo-router";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import { Thing } from "../types/types";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface DeviceScreenHeaderProps {
   deviceId: string;
@@ -14,11 +15,14 @@ const DeviceScreenHeader = ({
   dev,
   showAddForm,
 }: DeviceScreenHeaderProps) => {
+  const insets = useSafeAreaInsets();
+  const statusBarHeight = insets.top;
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
+        paddingTop: Platform.OS === "ios" ? statusBarHeight : 0,
       }}
     >
       <View style={{ flex: 1 }}>

@@ -51,6 +51,7 @@ const Register = () => {
         showSnackBar("Enter all details", 1000);
       }
     } catch (error: any) {
+      console.log(error?.response?.data?.message)
       setLoading(false);
       showSnackBar(
         error?.response?.data?.message || "Registration failed",

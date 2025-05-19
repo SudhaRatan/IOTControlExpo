@@ -106,7 +106,6 @@ const Switches = () => {
   return (
     <ThemedBackground
       style={{
-        padding: 20,
         paddingTop: StatusBar.currentHeight,
       }}
     >
@@ -123,9 +122,11 @@ const Switches = () => {
         contentContainerStyle={{
           gap: gap,
           flex: 1,
+          paddingHorizontal: 40,
+          paddingVertical: 20,
         }}
         columnWrapperStyle={{ gap: gap }}
-        style={{ padding: 20, flex: 1 }}
+        style={{ flex: 1 }}
         ListEmptyComponent={() => (
           <Text style={{ textAlign: "center", fontWeight: 700, fontSize: 16 }}>
             Add switches to display here
